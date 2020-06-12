@@ -8,10 +8,13 @@ const PORT = process.env.PORT || 5000;
 const connectionURI = process.env.MONGO;
 const deprecatedObj = {useUnifiedTopology: true, useNewUrlParser: true}
 const homeRouter = require('./routes/home_router')
+const movieRouter = require('./routes/movieRouter')
 
 app.use(morgan('dev'))
 app.use(express.json());
-app.use('/', homeRouter);
+app.use('/movie', movieRouter);
+app.use('/', homeRouter)
+app.use(express.static('./public'));
 
 mongoose.connect(connectionURI, deprecatedObj, () => {  
     console.log('The server is connected to the database')  
