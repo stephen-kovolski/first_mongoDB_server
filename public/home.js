@@ -2,8 +2,14 @@
 
 window.onload = () => {
 
-    AvailMoviesDiv = createDivElement({id: 'AvailMoviesDiv'});
-    document.body.appendChild(AvailMoviesDiv);
+    let titleDiv = createDivElement({id: 'titleDiv'})
+        document.body.appendChild(titleDiv)
+
+    let siteTitle = createHeading({text: 'Welcome to the movie rental site', size: 1});
+        titleDiv.appendChild(siteTitle)
+
+    let availMoviesDiv = createDivElement({id: 'availMoviesDiv'});
+        document.body.appendChild(availMoviesDiv);
 
 
     const xhr = new XMLHttpRequest();
@@ -30,29 +36,38 @@ window.onload = () => {
 
 function displayMovies(allMovies) {
 
-    let siteTitle = createHeading({text: 'Welcome to the movie rental site', size: 5});
-    AvailMoviesDiv.appendChild(siteTitle)
 
 
     for (let i = 0; i < allMovies.length; i++) {
+
+        const singleMovieDiv = createDivElement({})
 
         const movieData = allMovies[i];
         const title = document.createElement('h1')
         const release = document.createElement('h3')
         const movieImg = document.createElement('img')
         const imdbLink = createHyperLink({openNewTab: true, hreflink: movieData.imdb, text: movieData.title  + ' ' + 'Imdbpage', class: 'imdblink'})
+        const rentButton = document.createElement('button');
+        const returnButton = document.createElement('button');
+
 
         title.innerText = movieData.title;
         release.innerText = movieData.release;
         movieImg.src = movieData.img;
         movieImg.alt = movieData.title + 'IMG';
+        rentButton.innerText = `Rent ${movieData.title}`;
+        returnButton.innerText = `Return ${movieData.title}`;
 
-        AvailMoviesDiv.appendChild(title)
-        AvailMoviesDiv.appendChild(release)
-        AvailMoviesDiv.appendChild(movieImg)
-    
-        AvailMoviesDiv.appendChild(imdbLink)
 
+        availMoviesDiv.appendChild(singleMovieDiv)
+
+
+        singleMovieDiv.appendChild(title)
+        singleMovieDiv.appendChild(release)
+        singleMovieDiv.appendChild(movieImg)
+        singleMovieDiv.appendChild(imdbLink)
+        singleMovieDiv.appendChild(rentButton)
+        singleMovieDiv.appendChild(returnButton)
 
 
 
@@ -141,3 +156,4 @@ function createHyperLink(linkObject) {
     return link
     
 }
+

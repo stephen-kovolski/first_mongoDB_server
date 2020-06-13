@@ -1,0 +1,27 @@
+body {
+    
+    margin: 0px, 60px, 0px, 60px;
+
+}
+
+#titleDiv {
+
+    background-color: maroon;
+    padding: 10px;
+    font-weight: 500;
+
+}
+
+#availMoviesDiv {
+
+    display: flex;
+    padding: 5px;
+
+
+}
+
+#singleMovieDiv {
+
+    flex: auto;
+    padding: 6px;
+}
