@@ -8,7 +8,7 @@ body {
 #titleDiv {
 
     margin-top: .75em;
-    background-color: grey;
+    background-color: maroon;
     border: solid;
     padding: 10px;
     font-weight: 500;
@@ -36,4 +36,8 @@ body {
     flex: center;
     margin: 100px;
 
+}
+
+#postMovieDiv {
+    flex-direction: column;
 }

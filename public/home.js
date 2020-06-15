@@ -14,10 +14,15 @@ window.onload = () => {
     let rentedMovies = createDivElement({id: 'rentedMovies'})
         document.body.appendChild(rentedMovies)
 
+    let postMovieDiv = createDivElement({id: 'postMovieDiv'})
+        document.body.appendChild(postMovieDiv);
 
     const postButton = document.createElement('button');    
             postButton.id = 'postButton';
-            postButton.oncick = postMovie;
+            postButton.onclick = postMovie;
+
+            postButton.innerText = 'Add A New Movie'
+            titleDiv.appendChild(postButton)
 
     
 
@@ -46,7 +51,6 @@ window.onload = () => {
 }
 
 function displayMovies(allMovies) {
-
 
 
     for (let i = 0; i < allMovies.length; i++) {
@@ -179,6 +183,18 @@ function createHyperLink(linkObject) {
     
 }
 
+function createInput(inputObj) { // id, class, sCheck, pHolder
+
+    let input = document.createElement(`input`);
+
+    input.id = inputObj.id != undefined && document.getElementById(inputObj.id) == null ? inputObj.id : `>> No ID <<`;
+
+    input.placeholder = inputObj.placeholder != undefined ? inputObj.placeholder : ``;
+
+    return input
+
+}
+
 function rentMovie() {
 }
 
@@ -186,6 +202,61 @@ function returnMovie() {
 }
 
 function postMovie() {
-    
+
+    document.getElementById('postMovieDiv').style.display = 'visible'; 
+    document.getElementById('availMoviesDiv').style.display = "none"; 
+
+    let postPageTitle = createHeading({text: 'Thank you for contributing!  Please fill out the information below', size: 1});
+        postMovieDiv.appendChild(postPageTitle)
+
+
+    let postFormDiv = createDivElement({id: 'postFormDiv'})
+        postMovieDiv.appendChild(postFormDiv)
+
+
+    let movieTitle = createInput('input');
+        movieTitle.id = 'movieTitle'
+        movieTitle.placeholder = 'Movie Name';
+
+    let availability = createInput('input');
+        availability.id = 'availability'
+        availability.placeholder = 'availability';
+
+
+    let releaseDate = createInput('input');
+        releaseDate.id = 'releaseDate'
+        releaseDate.placeholder = 'Release Date';
+
+
+    let imdbInput = createInput('input');
+        imdbInput.id = 'imdbInput'
+        imdbInput.placeholder = 'imdb link';
+
+
+    let movieImg = createInput('input');
+        movieImg.id = 'movieImg'
+        movieImg.placeholder = 'Movie Image';
+
+
+
+    let submitButton = document.createElement('button');
+        submitButton.id = 'submitButton';
+        submitButton.onclick = submitNewMovie;
+        submitButton.innerText = 'Submit';
+
+
+
+        postMovieDiv.appendChild(movieTitle)
+        postMovieDiv.appendChild(availability)
+        postMovieDiv.appendChild(releaseDate)
+        postMovieDiv.appendChild(imdbInput)
+        postMovieDiv.appendChild(movieImg)
+        postMovieDiv.appendChild(submitButton)
+
+
+}
+
+function submitNewMovie() {
+
 }
 
