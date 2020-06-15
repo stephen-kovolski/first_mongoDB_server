@@ -11,6 +11,17 @@ window.onload = () => {
     let availMoviesDiv = createDivElement({id: 'availMoviesDiv'});
         document.body.appendChild(availMoviesDiv);
 
+    let rentedMovies = createDivElement({id: 'rentedMovies'})
+        document.body.appendChild(rentedMovies)
+
+
+    const postButton = document.createElement('button');    
+            postButton.id = 'postButton';
+            postButton.oncick = postMovie;
+
+    
+
+        
 
     const xhr = new XMLHttpRequest();
     
@@ -41,6 +52,8 @@ function displayMovies(allMovies) {
     for (let i = 0; i < allMovies.length; i++) {
 
         const singleMovieDiv = createDivElement({})
+        let imdbDiv = createDivElement({});
+
 
         const movieData = allMovies[i];
         const title = document.createElement('h1')
@@ -49,6 +62,12 @@ function displayMovies(allMovies) {
         const imdbLink = createHyperLink({openNewTab: true, hreflink: movieData.imdb, text: movieData.title  + ' ' + 'Imdbpage', class: 'imdblink'})
         const rentButton = document.createElement('button');
         const returnButton = document.createElement('button');
+
+
+        rentButton.id = 'rentButton';
+        rentButton.oncick = rentMovie;
+        returnButton.id = "returnMovie";
+        returnButton.onclick = returnMovie;
 
 
         title.innerText = movieData.title;
@@ -65,10 +84,13 @@ function displayMovies(allMovies) {
         singleMovieDiv.appendChild(title)
         singleMovieDiv.appendChild(release)
         singleMovieDiv.appendChild(movieImg)
-        singleMovieDiv.appendChild(imdbLink)
+
+        singleMovieDiv.appendChild(imdbDiv)
+
         singleMovieDiv.appendChild(rentButton)
         singleMovieDiv.appendChild(returnButton)
 
+        imdbDiv.appendChild(imdbLink)
 
 
         //for (let i = 0; i < allMovies.length)
@@ -154,6 +176,16 @@ function createHyperLink(linkObject) {
     // console.log(link);
 
     return link
+    
+}
+
+function rentMovie() {
+}
+
+function returnMovie() {
+}
+
+function postMovie() {
     
 }
 
