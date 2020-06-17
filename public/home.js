@@ -1,5 +1,10 @@
 //requst the api
 
+
+//this is to add more routes.  Use it in index.js.  It is the route (movies/get/:id, ,etc...)
+ //and directs it to read the folder and file you are telling it to
+ //app.use('/', express.static('./public/homeStatic'))
+
 window.onload = () => {
 
     let titleDiv = createDivElement({id: 'titleDiv'})
@@ -55,7 +60,7 @@ function displayMovies(allMovies) {
 
     for (let i = 0; i < allMovies.length; i++) {
 
-        const singleMovieDiv = createDivElement({})
+        const singleMovieDiv = createDivElement({class: 'singleMovieDivs'})
         let imdbDiv = createDivElement({});
 
 
@@ -259,4 +264,5 @@ function postMovie() {
 function submitNewMovie() {
 
 }
+
 

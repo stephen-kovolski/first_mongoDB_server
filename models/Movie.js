@@ -57,10 +57,13 @@ const Movie = new mongoose.Schema({
 
     inventory: {
         required: false,
-        type: Array,
-        default: []
+        type: Object,
+        default: {
+            available: 1,
+            rented: 0
+        }
     }
 
 })
 
-module.exports = mongoose.model(`Movie`, Movie);
+module.exports = mongoose.model(`Movie`, Movie);  

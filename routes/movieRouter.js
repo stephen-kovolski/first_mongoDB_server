@@ -116,7 +116,7 @@ router.post('/post/all', async (req, res) => {
 
     try {
 
-        const newMovie = await new Movie(req.body)
+        const newMovie = await Movie.create(req.body)
 
         await newMovie.save()
 
@@ -132,10 +132,10 @@ router.post('/post/all', async (req, res) => {
             
             console.log(err.message);
 
-            res.json({
+            res.status(500).json({
                 message: "An error ocured During the Post Request",
                 error: err.message,
-                status: 500
+                status: 500  
             })
             
 

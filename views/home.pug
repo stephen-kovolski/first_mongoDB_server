@@ -1,0 +1,30 @@
+html
+    title Movie Rentals
+
+    style
+       include ./public/homeThree.css
+
+    script
+        include /public/homeThree.js
+
+    body
+        h1= message
+
+        button#clickMe Click Me!
+
+        button.btns Click Me
+        button.btns  Also Clicke
+
+        .allMovies
+            each movieData in all_movies
+                if movieData.inventory.available > 0
+                    .Movie(id=movieData._id)
+                        h1=movieData.title
+                        h2=movieData.release
+                        img(src=movieData.img, alt=`${movieData})IMG Link`).movie
+                        a(href=movieData.imdb_link)=`${movieData.title} IMDB Page`
+                        button.deleteMovie Delete From Database
+                        button.getMovie Get More DB Info
+                        button.rentMovie Rent This Movie
+
+    

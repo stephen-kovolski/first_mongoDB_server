@@ -10,6 +10,9 @@ const deprecatedObj = {useUnifiedTopology: true, useNewUrlParser: true}
 const homeRouter = require('./routes/home_router')
 const movieRouter = require('./routes/movieRouter')
 
+app.set('view engine', 'pug')
+
+
 app.use(morgan('dev'))
 app.use(express.json());
 app.use('/movie', movieRouter);

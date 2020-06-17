@@ -28,16 +28,18 @@ body {
 
 }
 
-#singleMovieDiv img {
+.singleMovieDivs img {
 
+    display: flex auto;
+    flex-wrap: wrap;
     border-style: solid;
     border-width: medium;  
-
-    flex: center;
     margin: 100px;
 
 }
 
 #postMovieDiv {
+
+    display: flex;
     flex-direction: column;
 }
