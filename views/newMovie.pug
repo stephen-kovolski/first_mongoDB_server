@@ -1,0 +1,27 @@
+html
+    title Add Movie to Database
+
+    style
+        include ../public/newMovieThree.css
+        
+
+
+    script
+        include ../public/new-mov.js
+
+
+    -//link to css and js
+
+    body
+        form#newMovieForm
+            input(placeholder='Enter a Movie Title', name='title')
+            input(placeholder='Enter a Movie Poster Img Link', name='img', type='url')
+            input(placeholder='Enter a Movie Imdb', name='imdb_link', type='url')
+            input(placeholder='Enter a Movie Release Year', name='release', type='number', min='1900', max=new Date().getFullYear()+1)
+            input(placeholder='Enter a Movie Order Quantity', type='number', min='0', name='available')
+
+
+
+
+
+        button#submitMovie Add Movie to Database

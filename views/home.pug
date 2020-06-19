@@ -2,18 +2,16 @@ html
     title Movie Rentals
 
     style
-       include ./public/homeThree.css
+       include ../public/homeThree.css
 
     script
-        include /public/homeThree.js
+        include ../public/homeThree.js
 
     body
         h1= message
 
         button#clickMe Click Me!
 
-        button.btns Click Me
-        button.btns  Also Clicke
 
         .allMovies
             each movieData in all_movies
@@ -26,5 +24,10 @@ html
                         button.deleteMovie Delete From Database
                         button.getMovie Get More DB Info
                         button.rentMovie Rent This Movie
+
+                        
+                        
+
+                        
 
     

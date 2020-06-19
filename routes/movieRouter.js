@@ -112,7 +112,7 @@ router.patch('/patch/:movieId', findMovie, async (req, res) => {
     Movie.update({_id: id}, req.body)
 })
 
-router.post('/post/all', async (req, res) => {
+router.post('/post', async (req, res) => {
 
     try {
 

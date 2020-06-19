@@ -5,10 +5,7 @@ const Movie = new mongoose.Schema({
 
     //this is the schema we will be working with.  The way this is set up will be how all other objects will be set up and it will be how we access the informtion within the DB.
 
-    available: {
-        require: true,
-        type: Boolean
-    },
+   
 
     title: {
         unique: true,

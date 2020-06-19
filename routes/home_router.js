@@ -18,6 +18,14 @@ router.get('/mrental', async (req, res) => {
 })
 
 
+
+router.get('/mrental/new', async (req, res) => {
+    
+    res.render('newMovie')
+})
+
+
+
 router.get('/mrental/static', (req, res) => {
 
     const fileLocation = process.cwd() + '\\public\\home.html';
