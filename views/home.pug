@@ -1,29 +1,44 @@
 html
     title Movie Rentals
 
-    style
-       include ../public/homeThree.css
 
     script
         include ../public/homeThree.js
 
+
+    style
+       include ../public/newMovieThree.css
+
+
     body
+        -const currentYear = new Date().getFullYear();
         h1= message
 
         button#clickMe Click Me!
 
 
-        .allMovies
+        #allMovies
             each movieData in all_movies
                 if movieData.inventory.available > 0
                     .Movie(id=movieData._id)
-                        h1=movieData.title
-                        h2=movieData.release
-                        img(src=movieData.img, alt=`${movieData})IMG Link`).movie
-                        a(href=movieData.imdb_link)=`${movieData.title} IMDB Page`
-                        button.deleteMovie Delete From Database
-                        button.getMovie Get More DB Info
-                        button.rentMovie Rent This Movie
+                        .displayMovie
+                            h1=movieData.title
+                            h3=movieData.release
+                            img(src=movieData.img, alt=`${movieData}IMG Link`).movie
+                            a(href=movieData.imdb_link)=`${movieData.title} IMDB Page`
+                            button.rentMovie Rent This Movie
+                            button.deleteMovie Delete From Database
+                            button.getMovie Get More DB Info
+                        .editMovie
+                            form.editForm
+                                input(type='text', placeholder='Title', name='title')
+                                input(type='number', placeholder='release Date', name='release', value=currentYear, min=currentYear-100, max=currentYear)
+                                input(type='url', placeholder='Movie Image', name='Image')
+                                input(type='url', placeholder='IMDB', name='imdb')
+                            button.submitEdit Submit Changes
+                        .adminBtns
+                            button.deleteMovie Delete From Database
+                            button.editMovieBtn Edit Movie In Database
 
                         
                         

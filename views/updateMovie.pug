@@ -1,19 +1,15 @@
 html
-    title Add Movie to Database
+    title Movie Rentals
 
     style
-        include ../public/newMovieThree.css
-        
-
+       include ../public/homeThree.css
 
     script
-        include ../public/new-mov.js
-
-
-    -//link to css and js
+        include ../public/newPatch.js
 
     body
-        form#newMovieForm
+        form#updateMovieForm
+            input(placeholder='Enter a Movie Id', name='Id')
             input(placeholder='Enter a Movie Title', name='title')
             input(placeholder='Enter a Movie Poster Img Link', name='img', type='url')
             input(placeholder='Enter a Movie Imdb', name='imdb_link', type='url')
@@ -24,4 +20,4 @@ html
 
 
 
-        button#submitMovie Add Movie to Database
+        button#submitMovie Update this Movie
