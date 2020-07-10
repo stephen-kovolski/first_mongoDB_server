@@ -15,7 +15,7 @@ const User = new mongoose.Schema({
     },
 
 
-    adminProperty {
+    adminProperty: {
         adminLevel: {
             type: Number,
             default: 0,

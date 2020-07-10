@@ -9,6 +9,7 @@ const connectionURI = process.env.MONGO;
 const deprecatedObj = {useUnifiedTopology: true, useNewUrlParser: true}
 const homeRouter = require('./routes/home_router')
 const movieRouter = require('./routes/movieRouter')
+const user_router = require('./routes/user_router')
 
 app.set('view engine', 'pug')
 
@@ -18,6 +19,7 @@ app.use(express.json());
 app.use('/movie', movieRouter);
 app.use('/', homeRouter)
 app.use(express.static('./public'));
+app.use('/user', user_router)
 
 mongoose.connect(connectionURI, deprecatedObj, () => {  
     console.log('The server is connected to the database')  

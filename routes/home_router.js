@@ -29,7 +29,6 @@ router.get('/mrental', async (req, res) => {
 })
 
 
-
 router.get('/mrental/new', async (req, res) => {
     
     res.render('newMovie')
