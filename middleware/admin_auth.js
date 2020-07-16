@@ -1,12 +1,22 @@
+//like user_auth
+
+const jwt = require('jsonwebtoken')
 const apiKey = process.env.MOVIE_ADMIN_KEY
+const User = require('../models/User');
 
 function admin_Auth(req, res, next) {
 
-    const userKey = req.params.key
+    const user = User.findOne({_id: payload.id})
 
-    if (apiKey != userKey) return res.status(401).json({message: 'You are not authorized to use this route'})
 
-    next()
+    if (user.isAdmin === true){
+        next()
+    }
+
+    // check the admin properties.  make sure they are an admin
+    //is it an admin property from the User model.
+
+
 
 }
 

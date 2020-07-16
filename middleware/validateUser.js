@@ -19,7 +19,7 @@ const failedValues = [];
 
 const emailExist = await User.findOne({email: email}) != null;
 
-        if (emailExist) {
+        if (emailExist === null) {
             failedValues.push({
                 key:"email",
                 message: "Email in Use"
@@ -46,6 +46,8 @@ const emailExist = await User.findOne({email: email}) != null;
                 validation_error: failedValues
             })
         } else {
+
+            req.id = emailExist._id;
 
             next()
 

@@ -24,8 +24,13 @@ const User = new mongoose.Schema({
             type: Boolean,
             default: false
         } 
-    }
+    },
 
+    rentedMovies: {
+        type: [mongoose.Schema.Types.ObjectId],
+        ref: 'movies',
+        default: []
+    }
 
 
 })

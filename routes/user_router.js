@@ -9,7 +9,15 @@ const secret = process.env.JWT_SECRET;
 
 
 const validateUser = require('../middleware/validateUser')
-const authUser = require('../middleware/authUser')
+const logInUser = require('../middleware/logInUser')
+const user_auth = require('../middleware/user_auth')
+
+
+router.get('/testAuth', user_auth, (req, res) => {
+    res.send('success, youre logged in')
+})
+
+
 
 //POST
 //localhost:5000/user
@@ -44,11 +52,13 @@ router.post('/', validateUser, async (req, res) => {
 //localhost:5000/user
 //@desc put/login a new user and store in users collection
 //@access public
-router.put('/', authUser, async (req, res) => {
+router.put('/', logInUser, async (req, res) => {
 
-    const token = jwt.sign({id: req.id}, secret)
+    const token = jwt.sign({id: req.id}, secret, {expiresIn: 120})
 
-    res.json({token: token})
+    console.log(req.id)
+
+    res.json({token})
 })
 
 
