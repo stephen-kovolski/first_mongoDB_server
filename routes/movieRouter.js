@@ -2,6 +2,23 @@ const express = require('express');
 const router = express.Router();
 const Movie = require('../models/Movie');
 const findMovie = require('../models/findMovie')
+const admin_auth = require('../middleware/admin_auth');
+
+
+router.get('/adminTest', admin_auth, async (req, res) => {
+    try {
+
+        res.json({message: 'you are an admin', admin_info: req.admin})
+
+        } catch ( err) {
+
+            const errMsg = err.message || err
+            console.log('error in movie router test');
+            res.status(500).json({error: errMsg})
+
+        }
+})
+
 
 router.get('/all', async (req, res) => {
 
@@ -54,7 +71,7 @@ router.get('/get/:movieId', findMovie, (req, res) => {
 
 })
 
-router.delete('/delete/:movieId', findMovie, async (req, res) => { 
+router.delete('/delete/:movieId', findMovie, admin_auth, async (req, res) => { 
    
     try {
 

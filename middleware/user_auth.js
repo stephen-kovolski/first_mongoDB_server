@@ -1,6 +1,6 @@
 const jwt = require('jsonwebtoken');
 
-module.exports = (req, res, next) => {
+module.exports = async (req, res, next) => {
 
     const { JWT_SECRET: jwtKey, HEAD_AUTH_KEY: headerKey } = process.env;
 
@@ -15,13 +15,21 @@ module.exports = (req, res, next) => {
         throw new Error('ID was not defined in the payload')
     }
 
-    req.userId = decodedData.id;
+    const user = await findOne({_id: decodedData.id});
 
-    } catch (error) {
+    if (user === null){
+
+
+        throw new Error ('user id in payload was invalid for mong/mongoose')
+    }
+
+    req.user = user
+
+    } catch (err) {
 
         const errMsg = err.message || err;
 
-        console.log(`\nError in user_auth: ${errMsg}\n`)
+        console.error(`\nError in user_auth: ${errMsg}\n`)
 
         return res.status(401).json({error: 'Not Authorized'})
 
