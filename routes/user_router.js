@@ -1,3 +1,7 @@
+//movie rent route
+//movie return route
+
+
 const express = require('express');
 const router = express.Router();
 const User = require('../models/User');
@@ -11,12 +15,17 @@ const secret = process.env.JWT_SECRET;
 const validateUser = require('../middleware/validateUser')
 const logInUser = require('../middleware/logInUser')
 const user_auth = require('../middleware/user_auth')
+const adminAuth = require('../middleware/admin_auth')
+
 
 
 router.get('/testAuth', user_auth, (req, res) => {
     res.send('success, youre logged in')
 })
 
+router.get('/testAdminAuth', adminAuth, (req, res) => {
+    res.send('success, youre logged in')
+})
 
 
 //POST

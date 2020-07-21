@@ -4,11 +4,17 @@ const Movie = require('../models/Movie');
 const findMovie = require('../models/findMovie')
 const admin_auth = require('../middleware/admin_auth');
 
+//routes to make
+
+//add/delete movie inventory
+
+//TODO make movie routes admin/user only include adminAuth/user
+
 
 router.get('/adminTest', admin_auth, async (req, res) => {
     try {
 
-        res.json({message: 'you are an admin', admin_info: req.admin})
+        res.json({message: 'youre an admin', admin_info: req.admin})
 
         } catch ( err) {
 
@@ -18,7 +24,6 @@ router.get('/adminTest', admin_auth, async (req, res) => {
 
         }
 })
-
 
 router.get('/all', async (req, res) => {
 
@@ -60,7 +65,7 @@ router.get('/all', async (req, res) => {
 
 })
 
-router.get('/get/:movieId', findMovie, (req, res) => {
+router.get('/getmovie/:movieId', findMovie, (req, res) => {
 
     res.status(200).json({
         stauts: 200,
@@ -158,6 +163,34 @@ router.post('/post', async (req, res) => {
 
         }
 
+    }
+
+})
+
+//patch all movies to now have inventory that matches the model
+router.patch('/moviepatch1', admin_auth, async (req, res) => {
+
+    try {
+
+            const report = await Movie.updateMany(
+                {}, 
+                {
+                    'inventory.rented': {
+                        avaialable: 1,
+                        rented: []
+                    }
+                }
+            )
+
+            res.json({
+                allDoc: await Movie.find({}),
+                report: report,
+                message: 'successfull patch'
+            })
+
+    } catch (err){
+
+        res.status(500).json({error: err.message || err})
     }
 
 })
