@@ -1,8 +1,8 @@
 const jwt = require('jsonwebtoken');
+const User = require('../models/User')
 
-module.exports = async (req, res, next, adminLevel) => {
+module.exports = async (req, res, next) => {
 
-    console.log(adminLevel);
 
     const { JWT_SECRET: jwtKey, HEAD_AUTH_KEY: headerKey } = process.env;
 

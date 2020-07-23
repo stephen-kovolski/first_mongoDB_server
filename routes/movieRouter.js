@@ -3,6 +3,8 @@ const router = express.Router();
 const Movie = require('../models/Movie');
 const findMovie = require('../models/findMovie')
 const admin_auth = require('../middleware/admin_auth');
+const newError = require('../utilities/newError');
+
 
 //routes to make
 
@@ -10,6 +12,124 @@ const admin_auth = require('../middleware/admin_auth');
 
 //TODO make movie routes admin/user only include adminAuth/user
 
+router.patch('/addinven', admin_auth, async(req, res) => {
+
+    console.log(req.admin)
+
+    const {movieId, inc}  = req.body;
+
+    const adminLvl = req.admin.adminProperty.adminLevel; 
+    
+
+    
+
+
+
+    try {
+
+        if (typeof movieId === 'string' && movieId.length != 24) throw newError('movie id is invalid', 404);
+
+        if (typeof inc != 'number') throw newError('invalid input used for movie increase', 400);
+
+
+
+        if (
+            (adminLvl === 1 && (inc > 1 || inc < 0))
+                ||
+            (adminLvl === 2 && (inc > 10 || inc < 0))
+                ||
+            (adminLvl === 3 && (inc > 100 || inc < 0))
+        
+            ){
+                throw newError(`not authorized to increase by ${inc}`, 401)
+            }
+
+        const updateMovie = await Movie.findByIdAndUpdate(
+            {_id: movieId}, 
+            {$inc: {'inventory.available': inc}},
+            {new: 1}
+        );
+
+        
+        res.json({
+            movie: updateMovie
+        })
+
+
+    } catch (err) {
+
+        const errMsg = err.message || err;
+        const errCode = err.code || 500;
+
+        res.status(errCode).json({
+            error: errMsg
+        })
+
+    }
+
+
+
+
+})
+
+router.patch('/removeinven', admin_auth, async(req, res) => {
+
+
+    const {movieId, inc}  = req.body;
+
+    const adminLvl = req.admin.adminProperty.adminLevel; 
+    
+
+    
+
+
+
+    try {
+
+        if (typeof movieId === 'string' && movieId.length != 24) throw newError('movie id is invalid', 404);
+
+        if (typeof inc != 'number') throw newError('invalid input used for movie increase', 400);
+
+
+
+        if (
+            (adminLvl === 1 && (inc > 1 || inc < 0))
+                ||
+            (adminLvl === 2 && (inc > 10 || inc < 0))
+                ||
+            (adminLvl === 3 && (inc > 100 || inc < 0))
+        
+            ){
+                throw newError(`not authorized to increase by ${inc}`, 401)
+            }
+
+        const updateMovie = await Movie.findByIdAndUpdate(
+            {_id: movieId}, 
+            {$inc: {'inventory.available': -inc}},
+            {new: 1}
+        );
+
+        
+        res.json({
+            movie: updateMovie
+        })
+
+
+    } catch (err) {
+
+        const errMsg = err.message || err;
+        const errCode = err.code || 500;
+
+        res.status(errCode).json({
+            error: errMsg
+        })
+
+    }
+
+
+
+
+})
 
 router.get('/adminTest', admin_auth, async (req, res) => {
     try {
@@ -175,8 +295,8 @@ router.patch('/moviepatch1', admin_auth, async (req, res) => {
             const report = await Movie.updateMany(
                 {}, 
                 {
-                    'inventory.rented': {
-                        avaialable: 1,
+                    inventory: {
+                        available: 1,
                         rented: []
                     }
                 }
