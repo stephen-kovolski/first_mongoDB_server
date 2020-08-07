@@ -11,10 +11,18 @@ html
 
 
     body
-        -const currentYear = new Date().getFullYear();
-        h1= message
 
-        button#clickMe Click Me!
+        if isLoggedIn
+            button#logoutBtn(style='display:inline') Logout
+        else 
+            button#loginBtn(style='display:inline') Login
+
+
+        if isAdmin
+            button#adminPage Admin Page
+            
+
+        
 
 
         #allMovies
@@ -26,21 +34,29 @@ html
                             h3=movieData.release
                             img(src=movieData.img, alt=`${movieData}IMG Link`).movie
                             a(href=movieData.imdb_link)=`${movieData.title} IMDB Page`
-                            button.rentMovie Rent This Movie
                             button.deleteMovie Delete From Database
-                            button.getMovie Get More DB Info
-                        .editMovie
-                            form.editForm
-                                input(type='text', placeholder='Title', name='title')
-                                input(type='number', placeholder='release Date', name='release', value=currentYear, min=currentYear-100, max=currentYear)
-                                input(type='url', placeholder='Movie Image', name='Image')
-                                input(type='url', placeholder='IMDB', name='imdb')
-                            button.submitEdit Submit Changes
-                        .adminBtns
-                            button.deleteMovie Delete From Database
-                            button.editMovieBtn Edit Movie In Database
+                        if isAdmin
+                            .editMovie
+                                form.editForm(onSubmit='return false')
+                                    input(type='text', placeholder='Title', name='title')
+                                    input(type='number', placeholder='release Date', name='release', value=currentYear, min=currentYear-100, max=currentYear)
+                                    input(type='url', placeholder='Movie Image', name='Image')
+                                    input(type='url', placeholder='IMDB', name='imdb')
+                                    button.submitEdit Submit Changes
+                                    
 
-                        
+                            .adminBtns
+                                button.deleteMovie Delete From Database
+                                button.editMovieBtn Edit Movie In Database
+                        else
+                            button.rentMovieBtn Rent This Movie
+                            button.returnMovieBtn Return This Movie
+                            
+
+                        -// 1 new button for return movie
+                        -// 1.5 only the button needed is shown -> make it clear if they are already renting or not
+                        -// 2 modify current button to serve both purposes (back end modification possibily)
+                        -//button.getMovie Get More DB Info
                         
 
                         

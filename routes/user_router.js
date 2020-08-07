@@ -1,5 +1,6 @@
-//movie rent route
-//movie return route
+//log in rute
+//maje jwt and store it in the clients browser
+//create the ui
 
 
 const express = require('express');
@@ -29,64 +30,71 @@ router.get('/testAdminAuth', adminAuth, (req, res) => {
     res.send('success, youre logged in')
 })
 
-router.patch('/rent', user_auth, async (req, res) => {
 
-    const movieId = req.body.movieId;
-
+router.patch('/rent_or_return', user_auth, async (req, res) => {
+        
+    const {movieId, isRenting = true} = req.body;
 
     try {
 
-        const movie = await Movie.findOne({_id: movieId, 'inventory.available': {$gte: 1}})
+        const movieQuery = 
+                isRenting 
+                ? { _id: movieId, 'inventory.available': { $gte: 1 }} 
+                : { _id: movieId };
+
+        const userUpdate = 
+                isRenting 
+                ? { $addToSet: { rentedMovies: movieId} } 
+                : { $pull: { rentedMovies: movieId} };
+
+        const movieUpdate = 
+                isRenting 
+                ? { $addToSet: { 'inventory.rented': req.user._id }, $inc: { 'inventory.available': -1 }} 
+                : { $pull: { 'inventory.rented': req.user._id }, $inc: { 'inventory.available': 1 }};
+
+        const movie = await Movie.findOne(movieQuery);
 
         if (movie === null) {
             console.log(`Movie Id caused error renting ${movieId}`);
-            throw newError('Movie not found or Movie unavailable', 404);
+            throw newError('Movie Not Found or Movie Unavailable', 404);
         }
+        
+        
+        
 
-        if(req.user.rentedMovies.indexOf(movieId) != -1) {
-            console.log(`User tried to rent movie twice\n movieId; ${movieId}\nUserId: ${req.user._id}`);
-            throw newError('Movie not found or Movie unavailable', 409)
-        }
-
+        //modify the user doc
         const newUser = await User.findByIdAndUpdate(
-                req.user._id,
-                {$addToSet: {rentedMovies: movieId}},
-                {new: 1}
-
+            req.user._id,
+            userUpdate,
+            {new: 1}
         )
 
+        //modifying the movie doc
         const newMovie = await Movie.findByIdAndUpdate(
             movieId,
-            {
-                $addToSet: {'inventory.rented': req.user._id},
-                $inc: {'inventory.available': -1}
-            },
+            movieUpdate,
             {new: 1}
-
         )
 
-    res.json({
-        message: "success",
-        user: newUser,
-        movie: newMovie
-    })
-
-
+        res.json({
+            message: "successs",
+            user: newUser,
+            movie: newMovie
+        })
+        
     } catch (err) {
-
         const errMsg = err.message || err;
         const errCode = err.code || 500;
 
-        console.log(`Error in movie renting ${errMsg}`)
-
+        console.log(`Error in movie renting: ${errMsg}`);
+        
         res.status(errCode).json({
             error: errMsg
         })
-
     }
 
-
 })
+
 
 
 //POST
@@ -137,3 +145,73 @@ router.put('/', logInUser, async (req, res) => {
 
 
 module.exports = router;
+
+
+
+
+
+// router.patch('/return', user_auth, async (req, res) => {
+
+//     const {movieId, isRenting = true} = req.body.movieId;
+
+
+//     const movieQ = isRenting ? {_id: movieId, 'inventory.available': {$gte: 1}} : {_id: movieId};
+//     const userUp = isRenting ? { $addToSet: {rentedMovies: movieId}} : {$pull: {rentedMovies:movieId}};
+//     const movieUp = isRenting ? {$pull: {"inventory.rented": req.user._id}, $inc: { 'inventory.available': 1}};
+
+
+
+//     try {
+//                     //dont have to check inventory
+//         const movie = await Movie.findOne({_id: movieId, 'inventory.available': {$gte: 1}})
+
+//         if (movie === null) {
+//             console.log(`Movie Id caused error renting ${movieId}`);
+//             throw newError('Movie not found or Movie unavailable', 404);
+//         }
+
+//         if(req.user.rentedMovies.indexOf(movieId) != -1) {
+//             console.log(`User tried to rent movie twice\n movieId; ${movieId}\nUserId: ${req.user._id}`);
+//             throw newError('Movie not found or Movie unavailable', 409)
+//         }
+
+//         const newUser = await User.findByIdAndUpdate(
+//                 req.user._id,
+//                 userUp,
+//                 {$pull: {rentedMovies: movieId}},   //use $pull instead of add to set****
+//                 {new: 1}
+
+//         )
+
+//         const newMovie = await Movie.findByIdAndUpdate(
+//             movieId,
+//             {
+//                 $pull: {'inventory.rented': req.user._id},
+//                 $inc: {'inventory.available': +1}                           //use +1******
+//             },
+//             {new: 1}
+
+//         )
+
+//     res.json({
+//         message: "success",
+//         user: newUser,
+//         movie: newMovie
+//     })
+
+
+//     } catch (err) {
+
+//         const errMsg = err.message || err;
+//         const errCode = err.code || 500;
+
+//         console.log(`Error in movie renting ${errMsg}`)
+
+//         res.status(errCode).json({
+//             error: errMsg
+//         })
+
+//     }
+
+
+// })

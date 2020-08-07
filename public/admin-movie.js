@@ -1,6 +1,6 @@
 window.onload = () => {
 
-    //submitMovie.onclick = submitMovieReq;
+    submitMovie.onclick = submitMovieReq;
 
     console.log(submitMovie);
     
@@ -17,7 +17,7 @@ window.onload = () => {
     }
 
 
-    reqBody.inventory = {avaialable: reqBody.available, rented: 0};
+    reqBody.inventory = {avaialable: parseInt(reqBody.available), rented: []};
     
     console.log(reqBody)
 

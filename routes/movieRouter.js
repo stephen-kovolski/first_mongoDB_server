@@ -4,6 +4,7 @@ const Movie = require('../models/Movie');
 const findMovie = require('../models/findMovie')
 const admin_auth = require('../middleware/admin_auth');
 const newError = require('../utilities/newError');
+const extractToken = require('../middleware/extractToken');
 
 
 //routes to make
@@ -12,6 +13,84 @@ const newError = require('../utilities/newError');
 
 //TODO make movie routes admin/user only include adminAuth/user
 
+router.patch('/updateinv', extractToken, admin_auth, async(req, res) => {
+
+    const {movieId, inc, isIncrease = 1}  = req.body;
+
+    const adminLevel = req.admin.adminProperty.adminLevel;
+
+
+    try {
+
+        if (typeof movieId !== 'string' || movieId.length !== 24) throw newError('The movie id is invalid', 400);
+        if (typeof inc !== 'number' || inc <= 0) throw newError('increment value invalid', 400)
+
+        let limit;
+
+
+        switch (adminLevel) {
+            case 1:
+                limit =1
+                break;
+
+            case 2:
+                limit =10
+                break;
+
+            case 3:
+                limit =100
+                break;
+        }
+
+
+        if (inc > limit){
+                throw newError(`not authorized to increase by ${inc},with yur admin level of ${adminLevel}`, 401)
+            }
+
+
+
+            const increment = isIncrease === true ? inc : -inc;
+
+            const found = await Movie.findById(movieId);
+
+            if(found === null) throw new Error('Movie with that id does not exist', 404);
+
+            if(found.inventory.available + increment < 0) throw newError('Negative numbers are not allowed', 400);
+
+
+
+            const updatedMovie = await Movie.findOneAndUpdate( 
+                    {_id: movieId}, 
+                    {$inc: {'inventory.available': increment}}, 
+                    {new: 1})
+
+            res.json({
+                message: "successful Inventory update",
+                movie: updatedMovie
+            })
+
+
+    } catch (err) {
+
+        const {message = err, code = 500} = err
+
+        res.status(code).json({
+            error: message
+        })
+
+    }
+
+
+})
+
+
+router.get('/admin', extractToken, admin_auth, async(req, res) => {
+    res.render('admin-movie')
+})
+
+//movie renting & returning 
+
+
 router.patch('/addinven', admin_auth, async(req, res) => {
 
     console.log(req.admin)
@@ -19,6 +98,8 @@ router.patch('/addinven', admin_auth, async(req, res) => {
     const {movieId, inc}  = req.body;
 
     const adminLvl = req.admin.adminProperty.adminLevel; 
+
+    
     
 
     
@@ -254,13 +335,13 @@ router.patch('/patch/:movieId', findMovie, async (req, res) => {
     Movie.update({_id: id}, req.body)
 })
 
-router.post('/post', async (req, res) => {
+router.post('/post', extractToken, admin_auth, async (req, res) => {
 
     try {
 
-        const newMovie = await Movie.create(req.body)
+        console.log(req.body)
 
-        await newMovie.save()
+        const newMovie = await Movie.create(req.body)
 
         res.json({
             status: 201,
