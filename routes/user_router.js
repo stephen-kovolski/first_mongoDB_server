@@ -19,6 +19,7 @@ const user_auth = require('../middleware/user_auth')
 const adminAuth = require('../middleware/admin_auth');
 const Movie = require('../models/Movie');
 const newError = require('../utilities/newError');
+const extractToken = require ('../middleware/extractToken')
 
 
 
@@ -31,7 +32,9 @@ router.get('/testAdminAuth', adminAuth, (req, res) => {
 })
 
 
-router.patch('/rent_or_return', user_auth, async (req, res) => {
+router.patch('/rent_or_return', extractToken, user_auth, async (req, res) => {
+
+    console.log('test')
         
     const {movieId, isRenting = true} = req.body;
 

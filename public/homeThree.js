@@ -78,9 +78,13 @@ function setEventListeners() {
                 button.onclick = returnMovie
 
 
+    
+
+
     const loginBtn = document.getElementById('loginBtn') 
     const logoutBtn = document.getElementById('logoutBtn') 
     const adminBtn = document.getElementById('adminPage') 
+    const submitRegRedirect = document.getElementById('submitRegRedirect')
     
 
     
@@ -104,24 +108,30 @@ function setEventListeners() {
 
     }
 
+    if (submitRegRedirect) {
+
+        submitRegRedirect.onclick = submitRegRedirectFunc
+
+    }
+
     
 }
 
-function rentMovie() {
+function rentAMovie() {
 
     const reqBody = {
         movieId: this.parentElement.id,
         isRenting: true
     }
 
-    const endpoint = `${location}/user/rent_return`;
+    const endpoint = `${location}user/rent_return`;
 
     const reqObj = {
         method: 'PATCH',
         body: JSON.stringify(reqBody),
         headers: {
          'Access-Control-Allow-Origin': '*',
-         Accept: 'Application/json',
+         Accept: 'application/json',
          'content-type': 'application/json'
         },
     //req body
@@ -129,7 +139,7 @@ function rentMovie() {
     //endpoint
     //parse messeage from api response, alert user
 
-}
+    }
 
 
 fetch(endpoint, reqObj)
@@ -160,11 +170,12 @@ function logoutUser() {
     if(token !== null) {
         document.cookie = `token=; expires=Thu, 01 Jan 1970; path=/;`
         alert('logged out')
-        location.reload()
+        location.reload()  //`${location}user` maybe?
 
     } else {
 
         alert('you are not logged in')
+
 
     }
 
@@ -316,6 +327,48 @@ function changeEditView() {
 
     })
 }
+
+function rentMovie() {
+    const movieId = this.parentElement.id;
+
+    const isRenting = true;
+
+    const reqBody = {
+        movieId: movieId,
+        isRenting: isRenting,
+    }
+
+    const endpoint = `${location.origin}/user/rent_or_return`, 
+          reqObj = {
+              method: "PATCH",
+              body: JSON.stringify(reqBody),
+              headers: {
+                  'Access-Control-Allow-Origin': '*',
+                  Accept: 'application/json',
+                  'content-type': 'application/json'
+              }
+          };
+
+    fetch(endpoint, reqObj)
+    .then( rs => {
+        
+        return rs.json()
+    })
+    .then( res => {
+        console.log(res);
+        
+        
+    })
+}
+
+function submitRegRedirectFunc() {
+
+    location = `${location.origin}/register`;
+
+}
+
+
+
 
 
 

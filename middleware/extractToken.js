@@ -11,7 +11,7 @@ module.exports = (req, res, next) => {
     req.authKey = token;
 
 
-    console.log(token);
+    //console.log(token);
 
         next()
 

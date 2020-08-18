@@ -11,11 +11,13 @@ html
 
 
     body
+        
 
         if isLoggedIn
             button#logoutBtn(style='display:inline') Logout
         else 
             button#loginBtn(style='display:inline') Login
+            button#submitRegRedirect Create Your Account
 
 
         if isAdmin
@@ -34,7 +36,7 @@ html
                             h3=movieData.release
                             img(src=movieData.img, alt=`${movieData}IMG Link`).movie
                             a(href=movieData.imdb_link)=`${movieData.title} IMDB Page`
-                            button.deleteMovie Delete From Database
+                            
                         if isAdmin
                             .editMovie
                                 form.editForm(onSubmit='return false')

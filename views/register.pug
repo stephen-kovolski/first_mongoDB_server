@@ -1,0 +1,24 @@
+html
+    head
+        title error 404 movie rental site name not found
+
+        script
+            include ../public/register.js
+
+
+        style
+
+
+    body
+        #formDiv
+        h1#regHead Register Today
+            form#regForm 
+            label.lables Email
+            input#email(placeholder='Enter Email', name='email', type='email')
+            label.lables Passwrod
+            input#password(placeholder='Enter Password', name='password', type='password', minLength=7)
+            label.lables Enter Password Again
+            input#passwordrepeat(placeholder='Enter Password Again', name='passwordRepeat', type='password', minLength=7)
+            h4#passMsg(style='display:none')
+        button#submitReg Create Your Account
+        

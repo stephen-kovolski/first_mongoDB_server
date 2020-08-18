@@ -7,14 +7,18 @@ module.exports = async (req, res, next) => {
 
     const token = req.authKey;
 
-    if(token === undefined) {
+    const  test = token.trim().length < 1;
+
+    if(test) {
 
         //req.isAdmin = false;
 
         return next()
-    }
+    } 
 
-        console.log(JWT_SECRET)
+        //console.log(JWT_SECRET)
+
+        console.log(typeof token);
 
         try{
             const decodedJWT = jwt.verify(token, JWT_SECRET);
