@@ -17,8 +17,8 @@ app.set('view engine', 'pug')
 
 app.use(morgan('dev'))
 app.use(express.json());
-app.use('/movie', movieRouter);
 app.use('/', homeRouter)
+app.use('/movie', movieRouter);
 app.use(express.static('./public'));
 app.use('/user', user_router)
 

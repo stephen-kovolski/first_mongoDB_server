@@ -7,11 +7,6 @@ const newError = require('../utilities/newError');
 const extractToken = require('../middleware/extractToken');
 
 
-//routes to make
-
-//add/delete movie inventory
-
-//TODO make movie routes admin/user only include adminAuth/user
 
 router.patch('/updateinv', extractToken, admin_auth, async(req, res) => {
 

@@ -7,6 +7,7 @@ const validate = async (req, res, next) => {
 
 const email = req.body.email;
 const pW = req.body.password;
+const userName = req.body.username;
 const failedValues = [];
 
         if (!validator.isEmail(email)) { //checking to make sure the email that is entered is valid.  If not it sends the error message
@@ -37,6 +38,26 @@ const emailExist = await User.findOne({email: email}) != null;
             })
 
         }
+
+        const username = await User.findOne({username: username}) != null;
+
+        if (usernameExist === null) {
+            failedValues.push({
+                key:"username",
+                message: "username already in Use"
+            })
+            
+        } 
+
+        if (!validator.isLength(username, {min: 3, max: 300}) || !validator.isAlphanumeric(username, 'en-US')) {// validating length & requients of pw entered
+
+            failedValues.push({
+                key: "username",
+                mmessage: "Length Failed Requirements or special character not included"
+            })
+
+        }
+
 
 
         if (failedValues.length > 0) {

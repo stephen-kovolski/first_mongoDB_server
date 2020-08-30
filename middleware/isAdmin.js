@@ -7,9 +7,11 @@ module.exports = async (req, res, next) => {
 
     const token = req.authKey;
 
-    const  test = token.trim().length < 1;
+   // const test = ;
 
-    if(test) {
+    
+
+    if(token == undefined || token.trim().length < 1) {
 
         //req.isAdmin = false;
 
@@ -27,9 +29,10 @@ module.exports = async (req, res, next) => {
 
             const data = await User.findById(decodedJWT.id);
 
-            console.log(data);
-                
-            req.isAdmin = data != null && data.adminProperty.isAdmin === true;
+            req.isAdmin = data != null && data.adminProp.isAdmin === true
+
+            req.userId = decodedJWT.id;
+
 
                 next()
 

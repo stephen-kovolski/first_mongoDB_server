@@ -8,8 +8,7 @@ const isAdmin = require('../middleware/isAdmin')
 
 router.get('/', extractToken, isAdmin, async (req, res) => {
     //expected query properties: "msg" and "title"
-    const loggedIn = req.authKey.trim().length > 0;
-
+    const loggedIn = req.authKey == undefined || req.authKey.trim().length > 0;
         //console.log(req.authKey, "test")
 
     const allMovies = await Movie.find({'inventory.available': {$gte: 1}});
@@ -70,6 +69,33 @@ router.get('/admin', extractToken, adminAuth, async (req, res) => {
 router.get('/register', (req, res) => {
 
     res.render('register')
+
+
+})
+
+router.get('/profile/:username', extractToken, isAdmin, async(req, res) => {
+
+
+
+        const profileOwner = await User.findOne({username: req.params.username})
+
+        if (profileOwner === null) {
+
+            const viewingUser = await User.findById(req.userId);
+
+            const renderOption = {
+                proUserName: profileOwner.username,
+                rented:profileOwner.rentedMovies,
+                viewerRented:viewingUser === null ? [] : viewingUser.rentedMovies,
+            }
+
+            console.log(renderOptions)
+
+            res.render('profile', renderOption);
+
+        }  
+
+        
 
 
 })
